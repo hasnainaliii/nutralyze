@@ -2,7 +2,7 @@ import AuthNavigation from './AuthNavigation';
 import MainNavigation from './MainNavigation';
 
 function RootNavigator() {
-  const token = false;
+  const token = true;
   if (token) {
     return <MainNavigation />;
   } else {

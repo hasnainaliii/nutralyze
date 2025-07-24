@@ -4,11 +4,9 @@ import { MyButtonProps } from '../constants/Types';
 import MyLoading from './MyLoading';
 
 function MyButton({ style, onPress, children, loading }: MyButtonProps) {
-  return loading ? (
-    <MyLoading />
-  ) : (
+  return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      {children}
+      {loading ? <MyLoading /> : children}
     </TouchableOpacity>
   );
 }
@@ -22,7 +20,7 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     // height: dynamicSpacingY(5),
     paddingVertical: spacingY.md,
-    paddingHorizontal: spacingX.lg,
+    paddingHorizontal: spacingX.md,
     width: dynamicSpacingX(60),
     justifyContent: 'center',
     alignItems: 'center',

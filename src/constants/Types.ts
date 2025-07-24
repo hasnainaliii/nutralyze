@@ -10,6 +10,9 @@ export type StackParamList = {
 
 export type TabParamList = {
   Home: undefined;
+  Search: undefined;
+  Scan: undefined;
+  Liked: undefined;
   Profile: undefined; // another with multiple params
 };
 
@@ -25,6 +28,6 @@ export type MyTextProps = {
   color?: string;
   fontFamily?: TextStyle['fontFamily'];
   children: any | null;
-  style?: TextStyle;
+  style?: TextStyle | TextStyle[];
   textProps?: TextProps;
 };

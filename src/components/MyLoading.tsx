@@ -1,10 +1,10 @@
-import { PacmanIndicator } from 'react-native-indicators';
-import { colors } from '../constants/Them';
+import { BarIndicator } from 'react-native-indicators';
+import { colors, spacingY } from '../constants/Them';
 import { StyleSheet, View } from 'react-native';
-function MyLoading({ color = colors.primary, size = 40 }) {
+function MyLoading({ color = colors.white, size = 40 }) {
   return (
     <View style={styles.container}>
-      <PacmanIndicator color={color} size={size} />
+      <BarIndicator color={color} size={size} count={4} />
     </View>
   );
 }
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: spacingY.md,
   },
 });
 export default MyLoading;

@@ -1,157 +1,71 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  ScrollView, // Useful for content that might exceed screen height
-  TouchableOpacity, // For interactive elements
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import MiniCalendar from '../../components/MiniCalendar';
+import MyText from '../../components/MyText';
+import ScreenWrapper from '../../components/ScreenWrapper';
+import SemiPieChart from '../../components/SemiPieChart';
+import SmallCard from '../../components/SmallCard';
+import { colors, spacingX, spacingY } from '../../constants/Them';
 
 function Home() {
+  // const hour = new Date().getHours();
+  // const greeting =
+  //   hour < 12
+  //     ? 'Good Morning ☀️'
+  //     : hour < 18
+  //     ? 'Good Afternoon  🌞'
+  //     : 'Good Evening 🌝';
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#1a2b3c" />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+    <>
+      {/* <StatusBar barStyle="dark-content" backgroundColor="#fff" /> */}
+      <ScreenWrapper>
         <View style={styles.container}>
-          <Text style={styles.header}>Welcome Home!</Text>
-          <Text style={styles.subtitle}>
-            Your personalized dashboard awaits.
-          </Text>
+          <View style={styles.header}>
+            <MyText color={colors.primary} size={3}>
+              Hi, Hasnain Ali
+            </MyText>
 
-          {/* Simple Card for Content */}
+            <MyText>Every bite counts — let's make it healthy! 🥦✨</MyText>
+          </View>
+          <MiniCalendar />
+          <MyText size={2.5} color={colors.primary}>
+            Count your Daily Calories
+          </MyText>
+          <SemiPieChart />
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Daily Insights</Text>
-            <Text style={styles.cardText}>
-              You have 3 new notifications and 1 pending task. Keep up the great
-              work!
-            </Text>
-            <TouchableOpacity style={styles.actionButton}>
-              <Text style={styles.actionButtonText}>View Details</Text>
-            </TouchableOpacity>
+            <SmallCard iconBackgroundColor="#eae275" />
+            <SmallCard
+              backgroundColor={colors.secondary}
+              iconName={'egg'}
+              Title="Protein"
+              TotalValue={30}
+              iconBackgroundColor={colors.secondary20}
+            />
           </View>
-
-          {/* Another Section Example */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Quick Links</Text>
-            <TouchableOpacity style={styles.linkItem}>
-              <Text style={styles.linkText}>Profile Settings</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.linkItem}>
-              <Text style={styles.linkText}>Messages</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.linkItem}>
-              <Text style={styles.linkText}>App Tour</Text>
-            </TouchableOpacity>
-          </View>
+          <MyText size={4} style={{ marginTop: spacingY.md }}>
+            Diet Plans
+          </MyText>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </ScreenWrapper>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#1e334a', // Dark blue background, consistent
-  },
-  scrollViewContent: {
-    flexGrow: 1, // Ensures ScrollView takes full height
-    justifyContent: 'center', // Center content vertically if it doesn't fill
-    paddingVertical: 30, // Add some vertical padding
-  },
   container: {
     flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 25,
-    backgroundColor: '#1e334a',
+    gap: 5,
+    paddingHorizontal: spacingX.sm,
   },
   header: {
-    fontSize: 34,
-    fontWeight: 'bold',
-    color: '#ecf0f1', // Light gray/white for header
-    marginBottom: 10,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#aed6f1', // Light blue, slightly muted
-    textAlign: 'center',
-    marginBottom: 40,
+    alignItems: 'flex-start',
+    gap: 5,
   },
   card: {
-    backgroundColor: '#2c4560', // Slightly lighter dark blue for cards
-    borderRadius: 15,
-    padding: 25,
-    width: '100%',
-    maxWidth: 450,
-    marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 10, // Android shadow
-    borderColor: '#4a6b8c', // Subtle border
-    borderWidth: 1,
-  },
-  cardTitle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#aed6f1',
-    marginBottom: 10,
-  },
-  cardText: {
-    fontSize: 16,
-    color: '#ecf0f1',
-    lineHeight: 24,
-    marginBottom: 20,
-  },
-  actionButton: {
-    backgroundColor: '#3498db', // Blue accent button, consistent with login
-    paddingVertical: 12,
-    paddingHorizontal: 25,
-    borderRadius: 8,
-    alignSelf: 'flex-start', // Align to start of card
-  },
-  actionButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  section: {
-    width: '100%',
-    maxWidth: 450,
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#2c4560', // Consistent card background
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#ecf0f1',
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#4a6b8c',
-    paddingBottom: 10,
-  },
-  linkItem: {
-    paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth, // Thin separator
-    borderBottomColor: '#4a6b8c',
-  },
-  linkText: {
-    fontSize: 16,
-    color: '#aed6f1',
+    flexDirection: 'row',
+    gap: 10,
+
+    justifyContent: 'space-between',
+    marginTop: spacingY.lg,
   },
 });
-
 export default Home;

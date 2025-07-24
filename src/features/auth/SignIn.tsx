@@ -1,152 +1,118 @@
-import React, { useState } from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MyButton from '../../components/MyButton';
+import MyInput from '../../components/MyInput';
+import MyText from '../../components/MyText';
+import ScreenWrapper from '../../components/ScreenWrapper';
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  KeyboardAvoidingView,
-  Platform,
-  Alert, // Added for basic login alert
-} from 'react-native';
+  colors,
+  dynamicSpacingX,
+  dynamicSpacingY,
+  spacingY,
+} from '../../constants/Them';
+import { StackParamList } from '../../constants/Types';
+import { useRef } from 'react';
+import { Alert } from 'react-native';
 
 function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailRef = useRef('');
+  const passwordRef = useRef('');
 
-  const handleLogin = () => {
-    if (email && password) {
-      // Here you would typically send data to an authentication service
-      Alert.alert(
-        'Login Attempt',
-        `Email: ${email}\nPassword: ${password}\n(Login logic goes here!)`,
-      );
-      // For a real app, navigate to home screen or handle authentication state
-    } else {
-      Alert.alert('Error', 'Please enter both email and password.');
-    }
-  };
+  const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
+
+  function handleSubmit() {
+    Alert.alert('Email and password', emailRef.current + passwordRef.current);
+    emailRef.current = '';
+    passwordRef.current = '';
+    navigation.navigate('Main');
+  }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="light-content" backgroundColor="#1a2b3c" />
-      <KeyboardAvoidingView
-        style={styles.keyboardAvoidingView}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
-        <View style={styles.container}>
-          <Text style={styles.header}>Welcome Back!</Text>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Email Address</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your email"
-              placeholderTextColor="#8a9ba8"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={email}
-              onChangeText={setEmail}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>Password</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password"
-              placeholderTextColor="#8a9ba8"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
-          </View>
-
-          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Log In</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity>
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
+    <ScreenWrapper>
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.image}
+            resizeMode="contain"
+            source={require('../../assets/images/nutralyze-Logo-only.png')}
+          />
+          <MyText size={5} color={colors.primary}>
+            Neutralyze
+          </MyText>
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+
+        {/* INPUT CONTAINER */}
+        <View style={styles.inputContainer}>
+          <View>
+            <MyText>Email</MyText>
+            <MyInput
+              onChangeText={(value: string) => (emailRef.current = value)}
+              placeholder="Enter your Email"
+              keyboardType="email-address"
+              icon={<MaterialIcons name="mail" size={20} color="#aaa" />}
+              secureTextEntry
+            />
+          </View>
+          <View>
+            <MyText>Password</MyText>
+            <MyInput
+              onChangeText={(value: string) => (passwordRef.current = value)}
+              icon={<MaterialIcons name="lock" size={20} color="#aaa" />}
+              placeholder="Enter your Password"
+              disableKeyboardShortcuts
+              secureTextEntry
+            />
+          </View>
+
+          <Pressable>
+            <MyText color={colors.primary}>Forgot Password?</MyText>
+          </Pressable>
+        </View>
+        <MyButton
+          loading={false}
+          onPress={handleSubmit}
+          style={{ alignSelf: 'center', marginTop: spacingY.lg }}
+        >
+          <MyText color="white">Sign In</MyText>
+        </MyButton>
+        <View style={styles.footer}>
+          <MyText>Don't Have an Account?</MyText>
+          <Pressable onPress={() => navigation.navigate('Signup')}>
+            <MyText color={colors.primary}> Sign up</MyText>
+          </Pressable>
+        </View>
+      </View>
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#1e334a', // Dark blue background
-  },
-  keyboardAvoidingView: {
-    flex: 1,
-  },
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    padding: 25,
-    backgroundColor: '#1e334a',
-  },
-  header: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#ecf0f1', // Light gray/white for header
-    marginBottom: 50,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
-  inputGroup: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  inputLabel: {
-    fontSize: 16,
-    color: '#aed6f1', // Light blue for labels
-    marginBottom: 8,
-    fontWeight: '600',
-  },
-  input: {
-    width: '100%',
-    height: 55,
-    backgroundColor: '#2c4560', // Slightly lighter dark blue for input fields
-    borderRadius: 10,
-    paddingHorizontal: 18,
-    fontSize: 18,
-    color: '#ecf0f1',
-    borderWidth: 1,
-    borderColor: '#4a6b8c', // Subtle border
-  },
-  loginButton: {
-    width: '100%',
-    height: 55,
-    backgroundColor: '#3498db', // Vibrant blue for the button
-    borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 30,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 8, // Android shadow
+    gap: 10,
   },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#ffffff', // White text
+  logoContainer: {
+    paddingTop: spacingY.xl,
   },
-  forgotPasswordText: {
-    fontSize: 16,
-    color: '#8a9ba8', // Muted text for secondary links
-    marginTop: 10,
-    textDecorationLine: 'underline',
+  image: {
+    height: dynamicSpacingY(20),
+    aspectRatio: 1,
+  },
+  inputContainer: {
+    gap: 10,
+    alignItems: 'flex-start',
+    width: '100%',
+    paddingHorizontal: dynamicSpacingX(10),
+  },
+  forgot: {},
+  footer: {
+    flexDirection: 'row',
+    marginTop: spacingY.md,
   },
 });
 
