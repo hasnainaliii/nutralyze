@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import { StyleSheet, View } from 'react-native';
 import MiniCalendar from '../../components/MiniCalendar';
 import MyText from '../../components/MyText';
@@ -5,6 +6,8 @@ import ScreenWrapper from '../../components/ScreenWrapper';
 import SemiPieChart from '../../components/SemiPieChart';
 import SmallCard from '../../components/SmallCard';
 import { colors, spacingX, spacingY } from '../../constants/Them';
+import Avatar from '../../components/Avatar';
+import SlidingComponent from '../../components/SlidingComponent';
 
 function Home() {
   // const hour = new Date().getHours();
@@ -20,14 +23,25 @@ function Home() {
       <ScreenWrapper>
         <View style={styles.container}>
           <View style={styles.header}>
-            <MyText color={colors.primary} size={3}>
-              Hi, Hasnain Ali
-            </MyText>
+            <View
+              style={{
+                flexDirection: 'row',
+                gap: 10,
+                width: '100%',
+                alignItems: 'center',
+              }}
+            >
+              <Avatar />
+              <MyText color={colors.primary} size={1.9}>
+                Hasnain Ali
+              </MyText>
+            </View>
 
-            <MyText>Every bite counts — let's make it healthy! 🥦✨</MyText>
+            {/* <MyText>Every bite counts — let's make it healthy! 🥦✨</MyText> */}
           </View>
+          {/* <SlidingComponent /> */}
           <MiniCalendar />
-          <MyText size={2.5} color={colors.primary}>
+          <MyText size={2.5} color={colors.black}>
             Count your Daily Calories
           </MyText>
           <SemiPieChart />

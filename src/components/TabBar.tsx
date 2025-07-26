@@ -21,6 +21,8 @@ function TabBar({ state, descriptors, navigation }: any) {
         //     ? options.title
         //     : route.name;
 
+        // if (route.name === 'Scan') return null;
+
         const isFocused = state.index === index;
 
         const onPress = () => {

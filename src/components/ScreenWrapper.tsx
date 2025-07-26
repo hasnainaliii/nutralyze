@@ -1,11 +1,11 @@
 import { StatusBar } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { spacingX } from '../constants/Them';
+import { spacingX, spacingY } from '../constants/Them';
 
-function ScreenWrapper({ children }: any) {
+function ScreenWrapper({ children, style }: any) {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { ...style }]}>
       <StatusBar barStyle={'dark-content'} />
       {children}
     </SafeAreaView>
@@ -15,7 +15,7 @@ function ScreenWrapper({ children }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 2,
+    paddingTop: spacingY.sm,
     backgroundColor: '#ffffff',
     paddingHorizontal: spacingX.xxs,
   },

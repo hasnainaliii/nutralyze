@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#c8dfbf',
+    backgroundColor: '#FFF8EB',
     paddingHorizontal: spacingY.md,
     borderRadius: 10,
     paddingVertical: spacingY.md,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     color: '#666',
   },
   selectedDay: {
-    backgroundColor: colors.primary20, // Green
+    backgroundColor: colors.secondary, // Green
     borderRadius: 20,
   },
   // todayBorder: {

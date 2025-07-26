@@ -31,7 +31,7 @@ function SemiPieChart() {
         semiCircle
         radius={90}
         innerRadius={60}
-        innerCircleColor={colors.primary}
+        innerCircleColor={'#EFF7EE'}
         centerLabelComponent={centerLabel}
       />
     </View>
@@ -49,7 +49,7 @@ function centerLabel() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#EFF7EE',
     alignItems: 'center',
     borderRadius: 20,
     gap: 15,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   centerValueText: {
-    color: colors.white,
+    color: colors.black_text,
   },
   centerLabelText: {
     fontSize: 14, // Smaller font for "Left"

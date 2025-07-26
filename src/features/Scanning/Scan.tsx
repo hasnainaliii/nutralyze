@@ -34,6 +34,7 @@ function Scan() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [galleryImage, setGalleryImage] = useState<string | null>(null);
   const naviation = useNavigation<NativeStackNavigationProp<TabParamList>>();
+
   async function pickImageFromGallery() {
     const result = await launchImageLibrary({
       mediaType: 'photo',

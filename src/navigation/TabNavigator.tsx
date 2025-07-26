@@ -25,7 +25,7 @@ function TabNavigator() {
       <Tab.Screen
         name="Scan"
         component={Scan}
-        options={{ headerShown: false, tabBarStyle: { display: 'none' } }}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Liked"
@@ -41,6 +41,11 @@ function TabNavigator() {
   );
 }
 function CustomTabBar(props: any) {
+  const { state } = props;
+  const isScanScreen = state.routes[state.index].name === 'Scan';
+
+  if (isScanScreen) return null;
+
   return <TabBar {...props} />;
 }
 export default TabNavigator;
