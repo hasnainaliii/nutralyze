@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import MyText from '../../components/MyText';
 import ProfileOptions from '../../components/ProfileOptions';
 import ScreenWrapper from '../../components/ScreenWrapper';
@@ -11,7 +11,10 @@ import {
   spacingY,
 } from '../../constants/Them';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { useAuth } from '../../context/Context';
 function Profile() {
+  const { user, logout } = useAuth();
+
   return (
     <ScreenWrapper>
       <View style={styles.container}>
@@ -42,7 +45,7 @@ function Profile() {
             style={styles.imageStyle}
           />
           <MyText color="black" size={3}>
-            Hasnain Ali
+            {user?.name}
           </MyText>
         </View>
         <View style={styles.options}>
@@ -52,7 +55,9 @@ function Profile() {
           <View style={{ marginTop: spacingY.lg, width: '100%' }}>
             <ProfileOptions title={'Creator'} iconName={'star-fill'} />
           </View>
-          <ProfileOptions title={'Log Out'} iconName={'profile'} />
+          <Pressable onPress={() => logout()}>
+            <ProfileOptions title={'Log Out'} iconName={'profile'} />
+          </Pressable>
         </View>
       </View>
     </ScreenWrapper>

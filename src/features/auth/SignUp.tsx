@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useRef } from 'react';
-import { Alert, Image, Pressable, StyleSheet, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MyButton from '../../components/MyButton';
@@ -16,18 +16,70 @@ import {
   spacingY,
 } from '../../constants/Them';
 import { StackParamList } from '../../constants/Types';
+import { useAuth } from '../../context/Context';
 
+import { API_URL } from '@env';
+import MyLoading from '../../components/MyLoading';
 function SignIn() {
+  const { login } = useAuth();
+
   const nameRef = useRef('');
   const emailRef = useRef('');
   const passwordRef = useRef('');
 
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
-  function handleSubmit() {
-    Alert.alert('Email and password', emailRef.current + passwordRef.current);
-    emailRef.current = '';
-    passwordRef.current = '';
+  async function handleSubmit() {
+    const name = nameRef.current.trim();
+    const email = emailRef.current.trim();
+    const password = passwordRef.current.trim();
+
+    setError('');
+    setLoading(true);
+    if (!name || !email || !password) {
+      setError('Please fill in all the fields.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message || 'Something went wrong.');
+        return;
+      }
+
+      console.log('User signed up:', data);
+
+      login(data.token, data.user);
+      setLoading(false);
+    } catch (err) {
+      console.log(`${API_URL}/signup`, '2');
+      console.log('Signup failed:', err);
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -83,12 +135,17 @@ function SignIn() {
         </View>
 
         <View style={styles.footer}>
+          {error ? (
+            <View style={{ marginTop: 10, paddingHorizontal: 20 }}>
+              <MyText style={{ color: 'red', fontSize: 14 }}>{error}</MyText>
+            </View>
+          ) : null}
           <MyButton
             loading={false}
             onPress={handleSubmit}
             style={{ alignSelf: 'center', marginTop: spacingY.lg }}
           >
-            <MyText color="white">Sign Up</MyText>
+            {loading ? <MyLoading /> : <MyText color="white">Sign Up</MyText>}
           </MyButton>
           <View style={styles.sign}>
             <MyText>Already Have an Account?</MyText>

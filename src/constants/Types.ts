@@ -31,3 +31,16 @@ export type MyTextProps = {
   style?: TextStyle | TextStyle[];
   textProps?: TextProps;
 };
+
+export type User = {
+  name: string;
+  email: string;
+};
+
+export type AuthContextType = {
+  user: User | null;
+  token: string | null;
+  loading: boolean;
+  login: (token: string, user: User) => Promise<void>;
+  logout: () => Promise<void>;
+};

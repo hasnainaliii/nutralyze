@@ -4,6 +4,7 @@ import RootNavigator from './src/navigation/RootNavigator';
 import SplashScreen from 'react-native-splash-screen';
 import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import Context from './src/context/Context';
 
 function App() {
   useEffect(() => {
@@ -12,7 +13,9 @@ function App() {
   return (
     <GestureHandlerRootView style={styles.container}>
       <NavigationContainer>
-        <RootNavigator />
+        <Context>
+          <RootNavigator />
+        </Context>
       </NavigationContainer>
     </GestureHandlerRootView>
   );

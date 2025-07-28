@@ -7,8 +7,11 @@ import ScreenWrapper from '../../components/ScreenWrapper';
 import SlidingComponent from '../../components/SlidingComponent';
 import { colors, dynamicSpacingY, spacingY } from '../../constants/Them';
 import { StackParamList } from '../../constants/Types';
+import { useAuth } from '../../context/Context';
 
 function GetStarted() {
+  const { user, token } = useAuth();
+  console.log(user, token);
   const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
   return (
