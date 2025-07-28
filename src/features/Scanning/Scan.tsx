@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import RNFS from 'react-native-fs';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,6 +19,7 @@ import {
   useCameraDevice,
   useCameraPermission,
 } from 'react-native-vision-camera';
+import FunnyLoading from '../../components/FunnyLoading';
 import MyText from '../../components/MyText';
 import {
   colors,
@@ -34,6 +36,7 @@ function Scan() {
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [galleryImage, setGalleryImage] = useState<string | null>(null);
   const naviation = useNavigation<NativeStackNavigationProp<TabParamList>>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   async function pickImageFromGallery() {
     const result = await launchImageLibrary({
@@ -46,8 +49,6 @@ function Scan() {
       if (uri) {
         setGalleryImage(uri);
       }
-      console.log('selected Image Uri', result.assets);
-      console.log('selected Image Uri', result.assets[0].uri);
     }
   }
 
@@ -64,7 +65,7 @@ function Scan() {
       });
 
       const uri = 'file://' + photo.path;
-      console.log('Photo captured:', uri);
+
       setPhotoUri(uri);
     } catch (error) {
       console.error('Error capturing photo:', error);
@@ -77,6 +78,14 @@ function Scan() {
     }
   }, [hasPermission, requestPermission]);
 
+  useEffect(() => {
+    if (!photoUri || !galleryImage) {
+      return;
+    }
+    console.log('UseEffect is called');
+    handleScanImage();
+  }, [photoUri, galleryImage]);
+
   if (!device) {
     return (
       <View>
@@ -87,6 +96,67 @@ function Scan() {
 
   if (!hasPermission) {
     return <ActivityIndicator />;
+  }
+
+  async function handleScanImage() {
+    try {
+      const uri = photoUri || galleryImage;
+      if (!uri) {
+        console.warn('No image selected');
+        return;
+      }
+
+      setLoading(true);
+
+      // Convert image to base64
+      const filePath = uri.replace('file://', '');
+      const base64 = await RNFS.readFile(filePath, 'base64');
+
+      // Send to Clarifai
+      // console.log(base64);
+      const response = await fetch(
+        'https://api.clarifai.com/v2/users/clarifai/apps/main/models/food-item-recognition/versions/1d5fd481e0cf4826aa72ec3ff049e044/outputs',
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Key 2b30aff6571d4516bfee3073739fe092',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_app_id: {
+              user_id: 'clarifai',
+              app_id: 'main',
+            },
+            inputs: [
+              {
+                data: {
+                  image: {
+                    base64,
+                  },
+                },
+              },
+            ],
+          }),
+        },
+      );
+
+      const result = await response.json();
+
+      if (result?.outputs?.[0]?.data?.concepts) {
+        const predictions = result.outputs[0].data.concepts;
+
+        console.log('🍔 Clarifai Predictions:');
+        predictions.forEach((item: any) => {
+          console.log(`${item.name} (${(item.value * 100).toFixed(1)}%)`);
+        });
+      } else {
+        console.warn('No predictions found');
+      }
+    } catch (error) {
+      console.error('Error scanning image:', error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -137,16 +207,37 @@ function Scan() {
                 />
               </Pressable>
             </View>
-            <Image
-              source={{ uri: (photoUri || galleryImage) as string }}
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: 10,
-                marginTop: 10,
-              }}
-              resizeMode="cover"
-            />
+            <View>
+              <Image
+                source={{ uri: (photoUri || galleryImage) as string }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 10,
+                  marginTop: 10,
+                }}
+                resizeMode="cover"
+                blurRadius={loading ? 10 : 0}
+              />
+
+              {loading && (
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(0,0,0,0.2)',
+                  }}
+                >
+                  {/* <MyLoading color={colors.primary} /> */}
+                  <FunnyLoading />
+                </View>
+              )}
+            </View>
           </View>
         ) : (
           <Camera
@@ -189,6 +280,24 @@ function Scan() {
             color={colors.secondary}
           />
         </Pressable>
+
+        {/* <Pressable
+          onPress={handleScanImage}
+          style={{
+            position: 'absolute',
+            bottom: 100,
+            left: '25%',
+            right: '25%',
+            backgroundColor: colors.primary,
+            padding: 12,
+            borderRadius: 10,
+            alignItems: 'center',
+          }}
+        >
+          <MyText style={{ color: 'white', fontWeight: 'bold' }}>
+            Scan Food
+          </MyText>
+        </Pressable> */}
 
         <TouchableOpacity onPress={takePicture}>
           <MaterialIcons
