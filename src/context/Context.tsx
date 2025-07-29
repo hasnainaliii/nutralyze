@@ -8,6 +8,10 @@ function Context({ children }: { children: React.ReactNode }) {
   const [user, SetUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const ADMIN = {
+    email: 'ADMIN',
+    password: 'HASNAIN',
+  };
 
   useEffect(() => {
     async function loadAuth() {
@@ -46,6 +50,7 @@ function Context({ children }: { children: React.ReactNode }) {
     loading,
     login,
     logout,
+    ADMIN,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

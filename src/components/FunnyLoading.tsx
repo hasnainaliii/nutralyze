@@ -1,6 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BarIndicator } from 'react-native-indicators';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -12,58 +12,72 @@ import { colors, spacingY } from '../constants/Them';
 import MyText from './MyText';
 
 const funnyTexts = [
-  'Analyzing cheesy goodness...',
-  'Searching for extra pepperoni 🍕...',
-  'Asking AI chef...',
-  'Estimating calories... please hold the fries 🍟',
-  'Running food magic spell 🔮',
-  'Scanning your cravings...',
-  'Roasting data, not marshmallows 🔥',
+  '🍕 Hasnain is negotiating with the pizza AI...',
+  "🧠 Feeding Hasnain's brain... and belly!",
+  '🥦 Spotting greens Hasnain might avoid...',
+  '📷 Camera says: “Is that nihari again?”',
+  '🧪 Breaking down biryani atoms...',
+  '🍔 Counting invisible calories...',
+  '🧞‍♂️ Summoning food genie for Hasnain...',
+  '🔍 Scanning… this might be emotional.',
+  '🤖 Asking ChatGPT if samosa is a salad...',
 ];
 
 function FunnyLoading() {
-  const [text, setText] = useState(funnyTexts[0]);
-  console.log('in funny loading', 1);
+  const [textIndex, setTextIndex] = useState(0);
+  const opacity = useSharedValue(0);
+  const scale = useSharedValue(1);
+  const dotOpacity = useSharedValue(1);
 
-  // Change text every 2.5 seconds
+  // Text animation
   useEffect(() => {
+    opacity.value = withTiming(1, { duration: 500 });
+
     const interval = setInterval(() => {
-      const random = funnyTexts[Math.floor(Math.random() * funnyTexts.length)];
-      setText(random);
-    }, 2500);
+      opacity.value = 0;
+      setTimeout(() => {
+        setTextIndex(prev => (prev + 1) % funnyTexts.length);
+        opacity.value = withTiming(1, { duration: 500 });
+      }, 300);
+    }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [opacity]);
 
-  // Animation: bounce + fade
-  const scale = useSharedValue(1);
-  const opacity = useSharedValue(1);
+  // Text style animation
+  const animatedTextStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+    transform: [{ scale: scale.value }],
+  }));
 
+  // Pulsing dot animation
   useEffect(() => {
-    scale.value = withRepeat(
-      withSequence(withTiming(1.1), withTiming(1)),
+    dotOpacity.value = withRepeat(
+      withSequence(
+        withTiming(0.3, { duration: 500 }),
+        withTiming(1, { duration: 500 }),
+      ),
       -1,
       true,
     );
-    opacity.value = withRepeat(
-      withSequence(withTiming(0.8), withTiming(1)),
-      -1,
-      true,
-    );
-  }, [opacity, scale]);
+  }, [dotOpacity]);
 
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-      opacity: opacity.value,
-    };
-  });
+  // const animatedDotStyle = useAnimatedStyle(() => ({
+  //   opacity: dotOpacity.value,
+  // }));
 
   return (
     <View style={styles.container}>
-      <BarIndicator color={colors.primary} count={5} size={50} />
-      <Animated.View style={[styles.textWrapper, animatedStyle]}>
-        <MyText>{text}</MyText>
+      {/* <Animated.View style={[styles.dotsContainer, animatedDotStyle]}>
+        <View style={styles.dot} />
+        <View style={[styles.dot, { marginHorizontal: 5 }]} />
+        <View style={styles.dot} />
+      </Animated.View> */}
+
+      <Animated.View style={[styles.textWrapper, animatedTextStyle]}>
+        <MyText size={2} style={{ textAlign: 'center' }} color={colors.primary}>
+          {funnyTexts[textIndex]}
+        </MyText>
       </Animated.View>
     </View>
   );
@@ -74,15 +88,21 @@ const styles = StyleSheet.create({
     padding: spacingY.lg,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  dotsContainer: {
+    flexDirection: 'row',
+    marginBottom: spacingY.sm,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.primary,
   },
   textWrapper: {
-    marginTop: spacingY.md,
-  },
-  text: {
-    fontSize: 16,
-    color: colors.primary,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    paddingHorizontal: 20,
   },
 });
 

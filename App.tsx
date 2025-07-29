@@ -5,6 +5,7 @@ import SplashScreen from 'react-native-splash-screen';
 import { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import Context from './src/context/Context';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 function App() {
   useEffect(() => {
@@ -13,9 +14,11 @@ function App() {
   return (
     <GestureHandlerRootView style={styles.container}>
       <NavigationContainer>
-        <Context>
-          <RootNavigator />
-        </Context>
+        <KeyboardProvider statusBarTranslucent>
+          <Context>
+            <RootNavigator />
+          </Context>
+        </KeyboardProvider>
       </NavigationContainer>
     </GestureHandlerRootView>
   );

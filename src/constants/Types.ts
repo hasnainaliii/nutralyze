@@ -43,4 +43,5 @@ export type AuthContextType = {
   loading: boolean;
   login: (token: string, user: User) => Promise<void>;
   logout: () => Promise<void>;
+  ADMIN: any;
 };

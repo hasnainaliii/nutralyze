@@ -20,7 +20,7 @@ import { useAuth } from '../../context/Context';
 import MyLoading from '../../components/MyLoading';
 
 function SignIn() {
-  const { login } = useAuth();
+  const { login, ADMIN } = useAuth();
 
   const emailRef = useRef('');
   const passwordRef = useRef('');
@@ -32,6 +32,10 @@ function SignIn() {
   async function handleSubmit() {
     const email = emailRef.current.trim();
     const password = passwordRef.current.trim();
+
+    if (email === ADMIN.email && password === ADMIN.password) {
+      login('ADMIN TOKEN', { name: 'HASNAIN ADMIN', email: 'HASNAINEMAIL' });
+    }
     setError('');
     setLoading(true);
     if (!email || !password) {

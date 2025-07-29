@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MyText from '../../components/MyText';
 import ProfileOptions from '../../components/ProfileOptions';
 import ScreenWrapper from '../../components/ScreenWrapper';
@@ -10,7 +11,6 @@ import {
   spacingX,
   spacingY,
 } from '../../constants/Them';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useAuth } from '../../context/Context';
 function Profile() {
   const { user, logout } = useAuth();
@@ -44,10 +44,17 @@ function Profile() {
             resizeMode="cover"
             style={styles.imageStyle}
           />
-          <MyText color="black" size={3}>
-            {user?.name}
-          </MyText>
         </View>
+        <MyText color="black" size={3}>
+          {user?.name}
+        </MyText>
+        <MyText
+          color={colors.black_text}
+          style={{ paddingBottom: spacingY.lg }}
+          size={1.5}
+        >
+          {user?.email}
+        </MyText>
         <View style={styles.options}>
           <ProfileOptions title={'Edit Profile'} iconName={'person-fill'} />
           <ProfileOptions title={'Settings'} iconName={'gear'} />
@@ -55,7 +62,7 @@ function Profile() {
           <View style={{ marginTop: spacingY.lg, width: '100%' }}>
             <ProfileOptions title={'Creator'} iconName={'star-fill'} />
           </View>
-          <Pressable onPress={() => logout()}>
+          <Pressable style={{ width: '100%' }} onPress={() => logout()}>
             <ProfileOptions title={'Log Out'} iconName={'profile'} />
           </Pressable>
         </View>
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     gap: 5,
-    paddingVertical: spacingY.xxl,
+    paddingVertical: spacingY.md,
   },
   imageStyle: {
     height: dynamicSpacingY(15),
