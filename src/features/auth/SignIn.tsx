@@ -7,6 +7,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MyButton from '../../components/MyButton';
 import MyInput from '../../components/MyInput';
+import MyLoading from '../../components/MyLoading';
 import MyText from '../../components/MyText';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import {
@@ -17,7 +18,6 @@ import {
 } from '../../constants/Them';
 import { StackParamList } from '../../constants/Types';
 import { useAuth } from '../../context/Context';
-import MyLoading from '../../components/MyLoading';
 
 function SignIn() {
   const { login, ADMIN } = useAuth();
@@ -34,7 +34,7 @@ function SignIn() {
     const password = passwordRef.current.trim();
 
     if (email === ADMIN.email && password === ADMIN.password) {
-      login('ADMIN TOKEN', { name: 'HASNAIN ADMIN', email: 'HASNAINEMAIL' });
+      login('ADMIN TOKEN', { name: 'Hasnain', email: 'hasnain🕊️@.com' });
     }
     setError('');
     setLoading(true);

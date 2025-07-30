@@ -1,13 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import { StyleSheet, View } from 'react-native';
+import Avatar from '../../components/Avatar';
 import MiniCalendar from '../../components/MiniCalendar';
 import MyText from '../../components/MyText';
 import ScreenWrapper from '../../components/ScreenWrapper';
 import SemiPieChart from '../../components/SemiPieChart';
 import SmallCard from '../../components/SmallCard';
 import { colors, spacingX, spacingY } from '../../constants/Them';
-import Avatar from '../../components/Avatar';
-import SlidingComponent from '../../components/SlidingComponent';
 
 function Home() {
   // const hour = new Date().getHours();
@@ -45,6 +44,7 @@ function Home() {
             Count your Daily Calories
           </MyText>
           <SemiPieChart />
+          {/* <RadarChartComp /> */}
           <View style={styles.card}>
             <SmallCard iconBackgroundColor="#eae275" />
             <SmallCard
@@ -55,7 +55,7 @@ function Home() {
               iconBackgroundColor={colors.secondary20}
             />
           </View>
-          <MyText size={4} style={{ marginTop: spacingY.md }}>
+          <MyText size={4} color="black" style={{ marginTop: spacingY.md }}>
             Diet Plans
           </MyText>
         </View>

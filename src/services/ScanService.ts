@@ -122,7 +122,6 @@ export async function getCartoonImage(foodName: string) {
   );
 
   const data = await res.json();
-  console.log(data);
 
   if (data?.hits?.length > 0) {
     // Return the first image URL (you can use webformatURL or previewURL)

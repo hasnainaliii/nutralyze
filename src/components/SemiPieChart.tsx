@@ -7,7 +7,7 @@ import MyText from './MyText';
 const pieData = [
   {
     value: 70,
-    color: colors.primary60,
+    color: colors.primary,
   },
   {
     value: 30,

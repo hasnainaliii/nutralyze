@@ -9,11 +9,7 @@ const { width: screenWidth } = Dimensions.get('window');
 function HotNowCard({ item }: any) {
   return (
     <View style={styles.cardContainer}>
-      <Image
-        source={require('../assets/images/start-1.png')}
-        style={styles.cardImage}
-        resizeMode="contain"
-      />
+      <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
       <View style={styles.cardTextContent}>
         <MyText style={styles.cardTitle} size={1.8} color="black">
           {item.title}
